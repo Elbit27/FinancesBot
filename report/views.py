@@ -1,10 +1,10 @@
 from rest_framework.viewsets import ModelViewSet
 from . import serializers
-from .models import ReportDailyD, ReportDailyR
+from .models import ReportIncomes, ReportExpenses
 
 
 class ReportDailyRViewSet(ModelViewSet):
-    queryset = ReportDailyR.objects.all()
+    queryset = ReportExpenses.objects.all()
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -16,7 +16,7 @@ class ReportDailyRViewSet(ModelViewSet):
 
 
 class ReportDailyDViewSet(ModelViewSet):
-    queryset = ReportDailyD.objects.all()
+    queryset = ReportIncomes.objects.all()
 
     def get_serializer_class(self):
         if self.action == 'list':

@@ -1,15 +1,15 @@
 from rest_framework import serializers
-from .models import Category
+from .models import CategoryExpenses
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = CategoryExpenses
         fields = ('id', 'name')
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = CategoryExpenses
         fields = '__all__'
 

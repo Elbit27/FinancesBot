@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('category', '0004_alter_category_d_options'),
-        ('report_daily', '0001_initial'),
+        ('report', '0001_initial'),
     ]
 
     operations = [

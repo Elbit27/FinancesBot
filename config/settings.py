@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     # my_apps
     'bot',
     'category',
-    'report_daily',
+    'report',
 ]
 
 MIDDLEWARE = [

@@ -1,10 +1,10 @@
 from rest_framework import generics, permissions
-from .models import Category
+from .models import CategoryExpenses
 from . import serializers
 
 
 class CategoryCreateListView(generics.ListCreateAPIView):
-    queryset = Category.objects.all()
+    queryset = CategoryExpenses.objects.all()
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -18,7 +18,7 @@ class CategoryCreateListView(generics.ListCreateAPIView):
 
 
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Category.objects.all()
+    queryset = CategoryExpenses.objects.all()
     serializer_class = serializers.CategorySerializer
 
     def get_permissions(self):

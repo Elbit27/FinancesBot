@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('report_daily', '0002_alter_reportdailyd_options_and_more'),
+        ('report', '0002_alter_reportdailyd_options_and_more'),
     ]
 
     operations = [

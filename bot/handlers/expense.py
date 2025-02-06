@@ -2,13 +2,12 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 from aiogram import F, Router
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
-from bot.database.db_utils import get_categories, save_expense
-from report_daily.models import ReportDailyR
+from bot.database.db_utils import get_categories, save_expenses
 
 router = Router()
 
 # --- FSM: Определение состояний ---
-class ExpenseStates(StatesGroup):
+class ExpensesStates(StatesGroup):
     choosing_category = State()  # Ожидание выбора категории
     entering_body = State() # Ожидание ввода сообщения, на что именно потрачено (не обязательно)
     entering_amount = State()  # Ожидание ввода суммы
@@ -24,20 +23,20 @@ async def choose_category(message: Message, state: FSMContext) -> None:
         resize_keyboard=True
     )
     await message.reply('Выберите категорию расходов:', reply_markup=keyboard)
-    await state.set_state(ExpenseStates.choosing_category)  # Устанавливаем состояние
+    await state.set_state(ExpensesStates.choosing_category)  # Устанавливаем состояние
 
 
 # --- Обработчик выбора категории ---
-@router.message(ExpenseStates.choosing_category)
+@router.message(ExpensesStates.choosing_category)
 async def enter_amount(message: Message, state: FSMContext) -> None:
     category = message.text  # Сохраняем категорию
     await state.update_data(category=category)  # Запоминаем в состоянии
     await message.reply('Сколько вы потратили? Введите сумму:', reply_markup=ReplyKeyboardRemove())
-    await state.set_state(ExpenseStates.entering_amount)  # Ждем сумму
+    await state.set_state(ExpensesStates.entering_amount)  # Ждем сумму
 
 
 # --- Обработчик ввода суммы ---
-@router.message(ExpenseStates.entering_amount)
+@router.message(ExpensesStates.entering_amount)
 async def enter_body(message: Message, state: FSMContext) -> None:
     amount = message.text  # Получаем сумму
     if not amount.isdigit():  # Проверяем, что сумма числовая
@@ -46,12 +45,12 @@ async def enter_body(message: Message, state: FSMContext) -> None:
 
     await state.update_data(amount=amount)  # Сохраняем сумму
     await message.reply("На что именно потратили?:")
-    await state.set_state(ExpenseStates.entering_body)  # Ждем описание
+    await state.set_state(ExpensesStates.entering_body)  # Ждем описание
 
 
 # --- Обработчик ввода описания (body) ---
-@router.message(ExpenseStates.entering_body)
-async def save_expense_handler(message: Message, state: FSMContext) -> None:
+@router.message(ExpensesStates.entering_body)
+async def save_expenses_handler(message: Message, state: FSMContext) -> None:
     body = message.text  # Получаем описание
     await state.update_data(body=body)  # Сохраняем описание
 
@@ -60,7 +59,7 @@ async def save_expense_handler(message: Message, state: FSMContext) -> None:
     amount = user_data['amount']
 
     # Сохранение в БД (замени print() на реальную логику)
-    await save_expense(category, amount, body)
+    await save_expenses(category, amount, body)
 
     await message.reply(f"✅ Записано: {amount} в категорию {category} \n📝 Описание: {body}")
     # print(amount, category, body)
