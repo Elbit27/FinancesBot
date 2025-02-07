@@ -1,12 +1,17 @@
 from asgiref.sync import sync_to_async
-from category.models import CategoryExpenses
+from category.models import CategoryExpenses, CategoryIncomes
 from report.models import ReportExpenses, ReportIncomes
 from datetime import datetime, timedelta
 
-# Функция для получения категорий из базы
+# Функция для получения категорий расходов из базы
 @sync_to_async
-def get_categories():
+def get_expense_categories():
     return [str(cat) for cat in CategoryExpenses.objects.all()]
+
+# Функция для получения категорий доходов из базы
+@sync_to_async
+def get_income_categories():
+    return [str(cat) for cat in CategoryIncomes.objects.all()]
 
 @sync_to_async
 def get_report(operation: str, period: str):
@@ -34,4 +39,14 @@ def save_expenses(category_name, amount, body):
         expense.save()  # Сохраняем в базе
         return True
     except CategoryExpenses.DoesNotExist:
+        return False
+
+@sync_to_async
+def save_incomes(category_name, amount, body):
+    try:
+        category = CategoryIncomes.objects.get(name=category_name)  # Ищем категорию в базе
+        expense = ReportIncomes(category=category, amount=amount, body=body)
+        expense.save()  # Сохраняем в базе
+        return True
+    except CategoryIncomes.DoesNotExist:
         return False

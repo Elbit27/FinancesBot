@@ -10,7 +10,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from decouple import config
-from bot.handlers import start, expense, report
+from bot.handlers import start, expense, report, income
 
 
 # Bot token can be obtained via https://t.me/BotFather
@@ -27,6 +27,7 @@ async def main() -> None:
     dp.include_router(start.router)
     dp.include_router(expense.router)
     dp.include_router(report.router)
+    dp.include_router(income.router)
 
     # And the run events dispatching
     await dp.start_polling(bot)

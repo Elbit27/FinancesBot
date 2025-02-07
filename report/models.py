@@ -16,7 +16,7 @@ class ReportIncomes(models.Model):
         verbose_name_plural = 'Report incomes'
 
     def __str__(self):
-        return f"{self.category} - {self.amount} KGS - {localtime(self.created_at).strftime('%Y-%m-%d %H:%M:%S')}"
+        return f"{self.category} - {self.amount} KGS - {localtime(self.created_at).strftime('%H:%M')}"
 
 
 class ReportExpenses(models.Model):
